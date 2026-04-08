@@ -38,7 +38,7 @@ Flutter-based production tracking application for porcelain factory operations.
 
 Watch the app in action:
 
-👉 [![Watch the demo](https://img.youtube.com/vi/4DKzBbkUDPQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=4DKzBbkUDPQ)
+👉 ![Demo](screenshots/demo.gif)
 
 
 
