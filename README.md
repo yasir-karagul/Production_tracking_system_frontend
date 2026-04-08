@@ -1,213 +1,124 @@
-# Maia Porselen Frontend
+# production tracking system - Frontend
 
-Flutter-based production tracking application for factory operations.
-This client supports offline-first data entry, background synchronization, and role-based workflows.
+Flutter-based production tracking application for porcelain factory operations.
 
-## Table of Contents
+> ⚠️ This repository contains **frontend only**.
+> Backend services, APIs, and internal logic are **not included**.
 
-- [Highlights](#highlights)
-- [Tech Stack](#tech-stack)
-- [Architecture](#architecture)
-- [Project Structure](#project-structure)
-- [Supported Platforms](#supported-platforms)
-- [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
-- [Configuration](#configuration)
-- [Development Commands](#development-commands)
-- [Build Commands](#build-commands)
-- [Offline + Sync Behavior](#offline--sync-behavior)
-- [Localization](#localization)
-- [Security & Data Handling](#security--data-handling)
-- [Troubleshooting](#troubleshooting)
-- [Flutter References](#flutter-references)
 
-## Highlights
 
-- Role-based authentication (`worker`, `supervisor`, `admin`)
-- Production flow modules: production, quality, packaging, shipment
-- Offline-first local persistence with Drift (SQLite)
-- Sync queue with retry/backoff and mobile background sync (Workmanager)
-- Product/pattern catalog flows including file/image import
-- Turkish-first localization (`tr_TR`) and shift-aware access behavior
+## 🚀 Highlights
 
-## Tech Stack
+* Role-based workflows (`worker`, `supervisor`, `admin`)
+* Production modules: production, quality, packaging, shipment
+* Offline-first data entry with local persistence (SQLite via Drift)
+* Background synchronization with retry & failover handling
+* Product and catalog management with file/image support
+* Turkish-first UI (`tr_TR`) with shift-aware behavior
 
-- Flutter / Dart (`>=3.2.0 <4.0.0`)
-- State management: Riverpod
-- Networking: Dio (+ auth/redirect/failover interceptors)
-- Local database: Drift + SQLite
-- Secure storage: `flutter_secure_storage`
-- Background tasks: Workmanager (Android/iOS)
 
-## Architecture
 
-Project follows a layered structure:
+## 📸 Screenshots
 
-- `presentation/`: UI screens, widgets, Riverpod state providers
-- `application/`: app-level orchestration (sync/caching/business flows)
-- `data/`: remote/local data sources, repositories, models, database
-- `domain/`: core entities
-- `core/`: constants, theme, networking, utilities, shared errors
+| Production Entry                          | Pattern Selection                     |
+| ----------------------------------------- | ------------------------------------- |
+| ![Production](screenshots/production.png) | ![Patterns](screenshots/patterns.png) |
 
-## Project Structure
+| Reports                             | History                             |
+| ----------------------------------- | ----------------------------------- |
+| ![Reports](screenshots/reports.png) | ![History](screenshots/history.png) |
 
-```text
-lib/
-  application/
-  core/
-    constants/
-    errors/
-    network/
-    theme/
-    utils/
-  data/
-    database/
-    datasources/
-      local/
-      remote/
-    models/
-    repositories/
-  domain/
-    entities/
-  presentation/
-    providers/
-    screens/
-    widgets/
-  main.dart
+| Admin Panel                     |
+| ------------------------------- |
+| ![Admin](screenshots/admin.png) |
+
+
+
+## 🎥 Demo Video
+
+Watch the app in action:
+
+👉 [![Watch the demo](https://img.youtube.com/vi/4DKzBbkUDPQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=4DKzBbkUDPQ)
+
+
+
+## 🛠️ Tech Stack
+
+* Flutter / Dart (`>=3.2.0 <4.0.0`)
+* State Management: Riverpod
+* Networking: Dio
+* Local Database: Drift (SQLite)
+* Secure Storage: flutter_secure_storage
+* Background Tasks: Workmanager
+
+
+
+## 📱 Supported Platforms
+
+* Android
+
+
+
+## ⚙️ Getting Started
+
+### 1. Install dependencies
+
+```bash
+flutter pub get
 ```
 
-## Supported Platforms
+### 2. Run the app
 
-- Android
-- iOS
-- Web
-- Windows
-- macOS
-- Linux
+```bash
+flutter run
+```
 
-## Prerequisites
 
-- Flutter SDK (stable channel)
-- Dart SDK compatible with `pubspec.yaml`
-- A running backend API endpoint compatible with this client
 
-## Getting Started
+## 🔧 Configuration
 
-1. Install dependencies:
-   ```bash
-   flutter pub get
-   ```
-2. Run the app:
-   ```bash
-   flutter run --dart-define=API_BASE_URL=http://localhost:8000/api/v1
-   ```
-
-## Configuration
-
-API base URL is configured using `--dart-define`:
+The API base URL is configured using `--dart-define`:
 
 ```bash
 flutter run --dart-define=API_BASE_URL=http://localhost:8000/api/v1
 ```
 
-Notes:
+### Notes
 
-- For Android emulator, `http://10.0.2.2:8000/api/v1` is commonly used.
-- If `API_BASE_URL` is not provided, the app uses internal fallback candidates.
-- Do not commit private endpoints, credentials, tokens, or environment-specific secrets.
+* Android emulator uses:
 
-### Configuration Reference
+  ```
+  http://10.0.2.2:8000/api/v1
+  ```
+* Do NOT commit:
 
-| Key | Required | Example | Purpose |
-| --- | --- | --- | --- |
-| `API_BASE_URL` | No | `http://localhost:8000/api/v1` | Overrides default API base URL candidates at startup. |
+  * API keys
+  * tokens
+  * private endpoints
+  * environment secrets
 
-## Development Commands
 
-Analyze:
 
-```bash
-flutter analyze
-```
+## 🔄 Offline & Sync Behavior
 
-Run tests:
+* Data is stored locally when offline
+* Sync queue handles retries and failures
+* Background sync runs on mobile devices (Android/iOS)
+* Desktop platforms do not run background sync
 
-```bash
-flutter test
-```
 
-Regenerate Drift/build-runner code:
 
-```bash
-dart run build_runner build --delete-conflicting-outputs
-```
+## 🔐 Security Notes
 
-Watch mode for code generation:
+* Tokens are stored using secure storage
+* Avoid exposing sensitive production data
+* Keep all secrets outside the warehouse (environment-based)
 
-```bash
-dart run build_runner watch --delete-conflicting-outputs
-```
 
-Regenerate launcher icons:
 
-```bash
-dart run flutter_launcher_icons
-```
+## 🌍 Localization
 
-## Build Commands
+* Primary language: Turkish (`tr_TR`)
+* Date formats and UI follow Turkish localization
 
-Android APK:
 
-```bash
-flutter build apk --release
-```
-
-Android App Bundle:
-
-```bash
-flutter build appbundle --release
-```
-
-Web:
-
-```bash
-flutter build web --release
-```
-
-Windows:
-
-```bash
-flutter build windows --release
-```
-
-## Offline + Sync Behavior
-
-- Records are stored locally and queued when network is unavailable.
-- Sync queue supports retry/backoff and failure tracking.
-- Periodic sync task runs on mobile platforms (Android/iOS).
-- Desktop platforms skip Workmanager background scheduling.
-
-## Localization
-
-- Application locale is Turkish (`tr_TR`).
-- Date formatting and UI localization delegates are configured for Turkish usage.
-
-## Security & Data Handling
-
-- Access/refresh tokens are stored with secure storage APIs.
-- Avoid logging or sharing sensitive production data.
-- Keep configuration and deployment secrets outside version control.
-
-## Troubleshooting
-
-- API unreachable on Android emulator:
-  Use `http://10.0.2.2:<port>` instead of `localhost`.
-- Drift codegen issues:
-  Run `dart run build_runner build --delete-conflicting-outputs`.
-- Sync not running in background on desktop:
-  Expected behavior; Workmanager tasks are mobile-only in this app.
-
-## Flutter References
-
-- [Flutter documentation](https://docs.flutter.dev/)
-- [Flutter cookbook](https://docs.flutter.dev/cookbook)
