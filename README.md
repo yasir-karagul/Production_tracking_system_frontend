@@ -152,31 +152,6 @@ Modern Flutter-based production tracking application designed for factory operat
 
 ---
 
-# ⚙️ Run Locally
-
-```bash
-flutter pub get
-flutter run
-```
-
----
-
-# 🔧 Environment Configuration
-
-Run the application with a custom API endpoint:
-
-```bash
-flutter run --dart-define=API_BASE_URL=http://localhost:8000/api/v1
-```
-
-Android emulator local API:
-
-```bash
-http://10.0.2.2:8000/api/v1
-```
-
----
-
 # 🔄 Offline & Sync System
 
 * Data is stored locally during offline usage
